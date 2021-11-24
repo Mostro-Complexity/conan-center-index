@@ -37,6 +37,7 @@ class ProtobufConan(ConanFile):
 
     def export_sources(self):
         self.copy("CMakeLists.txt")
+        self.copy("source_subfolder/*")
         for patch in self.conan_data.get("patches", {}).get(self.version, []):
             self.copy(patch["patch_file"])
 
@@ -83,9 +84,9 @@ class ProtobufConan(ConanFile):
            if tools.Version(self.version) >= "3.15.4" and tools.Version(self.settings.compiler.version) < "4":
                 raise ConanInvalidConfiguration("protobuf {} doesn't support clang < 4".format(self.version))
 
-    def source(self):
-        tools.get(**self.conan_data["sources"][self.version],
-                  destination=self._source_subfolder, strip_root=True)
+    # def source(self):
+    #     tools.get(**self.conan_data["sources"][self.version],
+    #               destination=self._source_subfolder, strip_root=True)
 
     @property
     def _cmake_install_base_path(self):
